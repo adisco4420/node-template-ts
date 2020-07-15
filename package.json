@@ -1,0 +1,48 @@
+{
+  "name": "bureaudchange",
+  "description": "online platfrom for foreign exchange",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Sodiq Alabi",
+  "scripts": {
+    "dev": "nodemon ./bin/www",
+    "staging": "NODE_ENV=dev node ./bin/www",
+    "grunt": "grunt",
+    "build": "npm run grunt prod",
+    "test": "NODE_ENV=test mocha -r ts-node/register src/test/**/*.ts --timeout 30000 --exit",
+    "test_windows": "cross-env NODE_ENV=test mocha -r ts-node/register src/test/**/*.ts --timeout 50000 --exit",
+    "start": "node ./bin/www"
+  },
+  "engines": {
+    "node": "10.15.3"
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^7.2.8",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "chalk": "^2.4.2",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "errorhandler": "^1.4.3",
+    "express": "^4.16.4",
+    "grunt": "^1.0.4",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-ts": "^6.0.0-beta.22",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.10",
+    "swagger-ui-express": "^3.0.10",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/body-parser": "0.0.33",
+    "@types/errorhandler": "0.0.30",
+    "@types/mongodb": "^2.2.23",
+    "@types/mongoose": "^4.7.43",
+    "@types/node": "^12.0.0",
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.18.9",
+    "ts-node": "^7.0.1"
+  }
+}

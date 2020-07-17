@@ -67,5 +67,25 @@ class UserController extends BaseControl {
             this.sendResponse({status: Status.ERROR, data:error}, res);           
         }
     }
+    public async ResendEmail(req: Request, res: Response) {
+        try {
+            let responseObj = {status: null, data: null}; 
+            const user: any = await UserModel.findOne({email: req.params.email})
+            if (!user) {
+                responseObj = {status: Status.NOT_FOUND, data: 'User not found'}
+            } else {
+                if (user.isVerified) {
+                    responseObj = {status: Status.SUCCESS, data: 'You are already verified'}
+                } else {
+                    const token = TokenService.sign({id: user.id}, '1h');
+                    EmailService.send('confirm-user', {...user.toJSON(), token, baseUrl: req.body.baseUrl});
+                    responseObj = {status: Status.SUCCESS, data: 'Verification message has been sented'}
+                }
+            }
+            this.sendResponse(responseObj, res);
+          } catch (error) {
+            this.sendResponse({status: Status.ERROR, data: error}, res);  
+          }
+    }
 }
 export default new UserController

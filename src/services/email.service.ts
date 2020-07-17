@@ -39,7 +39,7 @@ class EmailService {
           <mj-section background-color="#E33491" padding-bottom="20px" padding-top="20px">
             <mj-column vertical-align="middle" width="100%">
               <mj-text align="left" color="#ffffff"  font-size="22px" font-family="open Sans Helvetica, Arial, sans-serif" padding-left="25px" padding-right="25px">
-              <span font-weight="600" font-size="24px" style="color:#ffffff">Hello ${paylaod.firstName?paylaod.firstName:''}</span><br /><br /> 
+              <span font-weight="600" font-size="24px" style="color:#ffffff">Hello ${paylaod.firstName?paylaod.firstName:''},</span><br /><br /> 
                 Welcome to ${this.companyName}.</mj-text>
               <mj-text align="left" color="#ffffff" font-size="15px" font-family="open Sans Helvetica, Arial, sans-serif" padding-left="25px" padding-right="25px">
                Thanks for joining ${this.companyName}, please confirm that your email address is correct to continue, 

@@ -9,6 +9,7 @@ class UserRoute  {
     public loadRoutes(prefix: String, router: Router) {
         this.initRegister(prefix, router);
         this.initConfirm(prefix, router);
+        this.initLogin(prefix, router);
     }
     private initRegister(prefix: String, router: Router): any { 
         router.post(prefix + "/register", Joi.vdtor(UserVtor.Register), (req: Request, res: Response) => {
@@ -19,6 +20,11 @@ class UserRoute  {
         router.get(prefix + "/confirm-email", AuthMidWare, (req, res: Response) => {
           UserController.Confirm(req, res)
         })
-      }
+    }
+    private initLogin(prefix: String, router: Router): any { 
+        router.post(prefix + "/login", Joi.vdtor(UserVtor.Login), (req, res: Response) => {
+          UserController.Login(req, res)
+        })
+    }
 }
 export default new UserRoute;

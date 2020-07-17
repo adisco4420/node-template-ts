@@ -4,6 +4,7 @@ import { compareSync, hashSync } from 'bcrypt-nodejs';
 import UserModel from '../models/user.model';
 import TokenService from '../services/token.service'
 import ModelHelper from '../helpers/model.helper';
+import EmailService from '../services/email.service';
 
 class UserController extends BaseControl {
     public async Register(req: Request, res: Response, next: NextFunction) {
@@ -15,7 +16,7 @@ class UserController extends BaseControl {
                 const msg = 'Your registration is successful, kindly verify your email address'
                 let responseObj = {status: Status.SUCCESS, data: msg};
                 const token = TokenService.sign({id: user._id}, '5h');                
-                // EmailService.send('confirm', {...user.toJSON(), token, baseUrl: req.body.baseUrl})
+                EmailService.send('confirm-user', {...user.toJSON(), token, baseUrl: req.body.baseUrl})
                 this.sendResponse(responseObj, res);
             } else { 
                 const msg = `This email already exists (${req.body.email})`

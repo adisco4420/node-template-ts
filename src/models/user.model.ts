@@ -2,14 +2,9 @@
 import * as mongoose from "mongoose";
 
 export let UserSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true
-        },
-    lastName: {
-        type: String,
-        required: true
-        },
+    firstName: { type: String},
+    lastName: { type: String},
+    phoneNumber: { type: String},
     email: {
         type: String,
         required: true,
@@ -21,10 +16,7 @@ export let UserSchema = new mongoose.Schema({
         required: true,
         select: false
         },
-    phoneNumber: {
-        type: String,
-        required: true
-    },
+
     isVerified: {
         type: Boolean, 
         default: false
@@ -37,6 +29,10 @@ export let UserSchema = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
+    balance: {
+        type: Number,
+        default: 0
+    }
 });
 
 const UserModel = mongoose.model('users', UserSchema)

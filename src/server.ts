@@ -83,7 +83,7 @@ export class Server {
     .then(() => {
       console.log('✌🏾 Successfully connected to MongoDB');
     })
-    .catch(err => {
+    .catch(err => {      
       console.log(chalk.default.red.bgBlack.bold('An error occured while conencting to MongoDB'));
     });
 

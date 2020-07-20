@@ -10,5 +10,11 @@ class UserValidator {
         email: joi.string().email({ minDomainSegments: 2 }).required(),
         password: joi.string().required(),
     }
+    public EditProfile = {
+        firstName: joi.string().required(),
+        lastName: joi.string().required(),
+        phoneNumber: joi.string().required(),
+        address: joi.string().required(),
+    }
 }
 export default new UserValidator()

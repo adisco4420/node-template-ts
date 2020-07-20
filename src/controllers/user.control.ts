@@ -87,5 +87,29 @@ class UserController extends BaseControl {
             this.sendResponse({status: Status.ERROR, data: error}, res);  
           }
     }
+    public async Profile(req: Request, res: Response) {
+        try {
+            const user = await UserModel.findById((req as any).user._id, '+balance');
+            if(user) {
+                this.sendResponse({status: Status.SUCCESS, data: { msg: 'User Profile', data: user}}, res)
+            } else {
+                this.sendResponse({status: Status.UNPROCESSABLE_ENTRY, data: 'User not found'}, res)
+            }
+        } catch (error) {
+            this.sendResponse({status: Status.ERROR, data: error} , res);
+        }
+    }
+    public async EditProfile(req: Request, res: Response) {
+        try {
+            const user = await UserModel.findByIdAndUpdate((req as any).user._id, {...req.body}, {new: true});
+            if(user) {
+                this.sendResponse({status: Status.SUCCESS, data: { msg: 'User Profile Updated Successfully', data: user}}, res)
+            } else {
+                this.sendResponse({status: Status.UNPROCESSABLE_ENTRY, data: 'User not found'}, res)
+            }
+        } catch (error) {
+            this.sendResponse({status: Status.ERROR, data: error} , res);
+        }
+    }   
 }
 export default new UserController

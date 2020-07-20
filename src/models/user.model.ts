@@ -5,6 +5,7 @@ export let UserSchema = new mongoose.Schema({
     firstName: { type: String},
     lastName: { type: String},
     phoneNumber: { type: String},
+    address: { type: String},
     email: {
         type: String,
         required: true,
@@ -31,7 +32,8 @@ export let UserSchema = new mongoose.Schema({
     },
     balance: {
         type: Number,
-        default: 0
+        default: 0,
+        select: false
     }
 });
 

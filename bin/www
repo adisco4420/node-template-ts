@@ -5,7 +5,6 @@
 var server = require("../dist/server");
 var debug = require("debug")("express:server");
 var http = require("http");
-console.log('www bin')
 //create http server
 var httpPort = normalizePort(process.env.PORT || 8080);
 var app = server.Server.bootstrap().app;
@@ -21,6 +20,7 @@ httpServer.on("error", onError);
 //start listening on port
 httpServer.on("listening", onListening);
 
+console.log('www bin running on port =>', httpPort);
 
 
 

@@ -13,14 +13,14 @@ export enum Status {
     UNPROCESSABLE_ENTRY
 }
 
-export class BaseControl {
+export class RootService {
 
     public sendResponse(serviceResponse: {status: Status , data: any}, res: Response): any {        
         var response = {
             status: this.getStatusString(serviceResponse.status),
             data: serviceResponse.data
         }
-        console.log('responding with', response);
+        console.log('responding with', response.status);
         res.status(this.getHttpStatus(response.status)).json(response);
     }
     private getHttpStatus(status: any): number {

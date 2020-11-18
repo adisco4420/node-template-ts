@@ -1,14 +1,14 @@
-import TokenService from '../services/token.service';
-import { BaseControl, Status } from '../controllers/base.control';
+import TokenUtil from '../utilities/token.util';
+import { RootService, Status } from '../services/_root.service';
 
-class AuthMidWare extends BaseControl {
+class AuthMidWare extends RootService {
     auth() {
         return (req, res, next) => {   
             try {
                 const authHeader = req.headers.authorization;
                 if(!authHeader) return this.sendResponse({status: Status.UN_AUTHORIZED, data:'Please specify authorization header'}, res);
                 const token = authHeader.split(' ')[1];
-                const tokenData = TokenService.verify(token);
+                const tokenData = TokenUtil.verify(token);
                 if(req.url.includes('/user/confirm-email') || tokenData.isVerified) {                    
                     req.user = tokenData;
                     next();

@@ -1,18 +1,16 @@
 import * as joi from 'joi'
-import { BaseControl, Status } from '../controllers/base.control';
+import { RootService, Status } from '../services/_root.service';
 /**
  * Validation middleware that uses joi to validate the request body.
  * @param schema Joi schema to use to validate the request body
  */
-export class Joi extends BaseControl {
-  vdtor(schema) {
+export class Joi extends RootService {
+  vdtor(schema: joi.Schema) {
     return async (req, res, next) => {
       try {
-            const result = await joi.validate(req.body, schema, {
-              abortEarly: false,
-            });
+            await schema.validateAsync(req.body, {abortEarly: false})
             next();
-          } catch (err) {              
+          } catch (err) {                          
             const errorDetails = err.details.map(e => e.message);
             const response = {
               msg: 'Some validation errors occured',

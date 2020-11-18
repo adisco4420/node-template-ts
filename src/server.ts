@@ -2,13 +2,11 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as path from "path";
 import * as cors from "cors";
+import * as helmet from 'helmet'
 import errorHandler = require("errorhandler");
-import mongoose = require("mongoose"); 
-import env from './env';
+import { dbConfig } from './models/_config';
+import { routes } from './routes/index.route';
 
-//routes
-import UserRoute from './routes/user.route';
-import chalk = require('chalk');
 
 /**
  * The server.
@@ -18,7 +16,6 @@ import chalk = require('chalk');
 export class Server {
 
   public app: express.Application;
-  private connection: mongoose.Connection;
   /**
    * Bootstrap the application.
    *
@@ -45,10 +42,9 @@ export class Server {
     //configure application
     this.config();
 
-    //add routes
-    this.routes();
+    dbConfig()
+    routes(this.app);
 
-    this.runners(this.connection);
   }
 
   /**
@@ -68,24 +64,12 @@ export class Server {
     //mount query string parser
     this.app.use(bodyParser.urlencoded({extended: true }));
 
+    this.app.use(helmet())
+
     //cors error allow
     this.app.options("*", cors());
     this.app.use(cors());
 
-    // Mongose => fix all deprecation warnings
-    mongoose.set('useCreateIndex', true);
-    mongoose.set('useNewUrlParser', true)
-    mongoose.set('useUnifiedTopology', true);
-    mongoose.set('useFindAndModify', false);
-
-    // Connect to MongoDB
-    mongoose.connect(env.MONGODB_URI)
-    .then(() => {
-      console.log('✌🏾 Successfully connected to MongoDB');
-    })
-    .catch(err => {
-      console.log(chalk.default.red.bgBlack.bold('An error occured while conencting to MongoDB'));
-    });
 
     // catch 404 and forward to error handler
     this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -97,30 +81,6 @@ export class Server {
     this.app.use(errorHandler());
   }
 
-  /**
-   * Create and return Router.
-   *
-   * @class Server
-   * @method config
-   * @return void
-   */
-  private routes() {
-    let router: express.Router;
-    router = express.Router();
 
-    console.log(chalk.default.yellow.bgBlack.bold("Loading user routes"));
-    UserRoute.loadRoutes('/user', router); 
-
-    //use router middleware
-    this.app.use(router);
-
-    this.app.all('*', (req, res)=> {
-      return res.status(404).json({ status: 404, error: 'not found' });
-    });
-  }
   
-
-  private runners(connection: mongoose.Connection): any {
-    //register and fire scheduled job runner classes
-  }
 }

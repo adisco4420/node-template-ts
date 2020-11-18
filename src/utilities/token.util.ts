@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import env from '../env';
 
-class TokenService {
+class TokenUtil {
     sign(payload, expiresIn: string | number) {
        return jwt.sign(payload, env.JWT_KEY, {expiresIn: expiresIn ? expiresIn : '1d'});
     }
@@ -9,4 +9,4 @@ class TokenService {
         return jwt.verify(token, env.JWT_KEY);
     }
 }
-export default new TokenService;
+export default new TokenUtil;

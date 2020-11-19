@@ -1,4 +1,6 @@
 import { Model, Document } from 'mongoose';
+import QueryUtil from '../utilities/query.util';
+
 export class RootController {
     private model: Model<Document>;
     constructor(model: Model<Document>) {
@@ -15,13 +17,37 @@ export class RootController {
     create(payload) {
         return this.model.create({...payload})
     }
-    getAll(conditions?) {
-        return this.model.find({...conditions})
+    getAll(query?: {filter?: any, limit?: number, skip?: number, sort?: any}) {
+        const { filter, skip, limit, sort } = QueryUtil.buildQuery(query);
+        return this.model.find({...filter}).skip(skip).limit(limit).sort(sort);
     }
-    update() {
-
+    getOne(query, select = '') {
+        const { filter } = QueryUtil.buildQuery(query)
+        return this.model.findOne({...filter}).select(select)
     }
-    delete() {
-
+    getById(id, select = '') {
+        return this.model.findById(id).select(select)
+    }
+    updateOne(query, updateValues) {
+        const { filter: condition } = QueryUtil.buildQuery(query)
+        return this.model.updateOne({...condition}, {...updateValues}, {new: true})
+    }
+    updateMany(query, updateValues) {
+        const { filter: condition } = QueryUtil.buildQuery(query)
+        return this.model.updateMany({...condition}, {...updateValues})
+    }
+    updateById(id, condition) {
+        return this.model.findByIdAndUpdate(id, {...condition}, {new: true})
+    }
+    deleteOne(query) {
+        const { filter: condition } = QueryUtil.buildQuery(query)
+        return this.model.deleteOne({...condition})
+    }
+    deleteMany(query) {
+        const { filter: condition } = QueryUtil.buildQuery(query)
+        return this.model.deleteMany({...condition})
+    }
+    deleteById(id) {
+        return this.model.findByIdAndDelete(id)
     }
 }

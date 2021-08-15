@@ -15,10 +15,11 @@ export enum Status {
 
 export class RootService {
 
-    public sendResponse(serviceResponse: {status: Status , data: any}, res: Response): any {        
+    public sendResponse(serviceResponse: {status: Status , data: any, msg?: string}, res: Response): any {        
         var response = {
             status: this.getStatusString(serviceResponse.status),
-            data: serviceResponse.data
+            data: serviceResponse.data,
+            msg: serviceResponse.msg
         }
         console.log('responding with', response.status);
         res.status(this.getHttpStatus(response.status)).json(response);

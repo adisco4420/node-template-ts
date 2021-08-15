@@ -9,7 +9,7 @@ class AuthMidWare extends RootService {
                 if(!authHeader) return this.sendResponse({status: Status.UN_AUTHORIZED, data:'Please specify authorization header'}, res);
                 const token = authHeader.split(' ')[1];
                 const tokenData = TokenUtil.verify(token);
-                if(req.url.includes('/user/confirm-email') || tokenData.isVerified) {                    
+                if(tokenData) {                    
                     req.user = tokenData;
                     next();
                 } else {

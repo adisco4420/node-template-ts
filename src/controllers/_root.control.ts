@@ -6,8 +6,9 @@ export class RootController {
     constructor(model: Model<Document>) {
         this.model = model
     }
-    unique = async (conditions: object) => {
-        const res =  await this.model.findOne({...conditions});        
+    unique = async (conditions: {key: string, value: string}) => {
+        const {key, value} = conditions;
+        const res =  await this.model.findOne({[key]: value});        
         if(res) {
             return false
         } else {

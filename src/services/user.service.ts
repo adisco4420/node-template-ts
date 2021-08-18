@@ -5,10 +5,11 @@ import TokenUtil from '../utilities/token.util';
 import * as bcrypt from 'bcrypt';
 
 class UserService extends RootService {
+    private bcrptSalt = 10
     createUser = async (req: Request, res: Response) => {
         try {
             const userIsUnique = await UserControl.unique({key: 'email', value: req.body.email});
-            req.body.password = await bcrypt.hash(req.body.password, 10);
+            req.body.password = await bcrypt.hash(req.body.password, this.bcrptSalt);
             if(userIsUnique) {
                 console.log(req.body);
                 const user: any = await UserControl.create({...req.body});                
@@ -60,6 +61,32 @@ class UserService extends RootService {
         } catch (error) {
             this.sendResponse({status: Status.ERROR, data: error} , res);
         }
+    }
+    changePwd = async (req: Request, res: Response) => {
+       try {
+        const { oldPassword, newPassword, securityAnswer, securityQuestion } = req.body;
+        if(!(oldPassword && newPassword && securityAnswer && securityQuestion)) throw 'Invalid data sent';
+
+        const userDetails = await UserControl.getById((req as any).user._id);
+        if(!userDetails) throw 'Invalid User';
+
+        const user = userDetails.toJSON();
+        const isValidPassword = await bcrypt.compare(oldPassword, user.password);
+        if(!isValidPassword) throw 'Old password is incorrect';
+
+        const validAnser = securityAnswer === user.otherInfo.securityQuestionAnswer;
+        const validQuestion = securityQuestion === user.otherInfo.securityQuestion;
+        if(!(validAnser && validQuestion)) throw 'Invalid Security question or Answer';
+
+        const newPasswordHash = await bcrypt.hash(newPassword, this.bcrptSalt);
+
+        await UserControl.updateById(user._id, {password: newPasswordHash})
+        
+        this.sendResponse({status: Status.SUCCESS, data: {payload: user}, msg: 'Password Updated Successfully'}, res)
+       } catch (error) {
+           const errMsg = error.msg || error;
+         this.sendResponse({status: Status.ERROR, data: error, msg: errMsg} , res);
+       }
     }
 }
 export default new UserService;

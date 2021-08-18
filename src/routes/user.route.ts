@@ -9,6 +9,7 @@ class UserRoute {
         this.create(prefix, router)
         this.loginUser(prefix, router)
         this.getUserProfile(prefix, router)
+        this.changePwd(prefix, router)
     }
     private create(prefix: string, router: Router) {
         router.post(`${prefix}`, Joi.vdtor(UserVdtor.createUser), UserSrv.createUser)
@@ -18,6 +19,9 @@ class UserRoute {
     }
     private getUserProfile(prefix: string, router: Router) {
         router.get(`${prefix}/profile`, AuthMidware, UserSrv.getUserProfile)
+    }
+    private changePwd(prefix: string, router: Router) {
+        router.patch(`${prefix}/changePwd`, AuthMidware, UserSrv.changePwd)
     }
 }
 export default new UserRoute;

@@ -88,5 +88,29 @@ class UserService extends RootService {
          this.sendResponse({status: Status.ERROR, data: error, msg: errMsg} , res);
        }
     }
+    getAllUsers = async (req: Request, res: Response) => {
+        try {
+            const sort = JSON.stringify({key: '_id', value: '-1'})
+            const users = await UserControl.getAll({sort});
+            this.sendResponse({status: Status.SUCCESS, data: { msg: 'All Users', payload: users}}, res)
+        } catch (error) {
+            this.sendResponse({status: Status.ERROR, data: error} , res);
+        }
+    }
+    adminUpdateUser = async (req: Request, res: Response) => {
+        try {
+            const { userId, balance } = req.body;
+            if(!(userId && balance)) throw 'userId and balance are required';
+
+            const updatedUser = await UserControl.updateById(userId, {balance});
+            if(updatedUser) {
+                this.sendResponse({status: Status.SUCCESS, data: { msg: 'User Updated', payload: updatedUser}}, res)
+            } else {
+                this.sendResponse({status: Status.UNPROCESSABLE_ENTRY, data: 'User not found'}, res)
+            } 
+        } catch (error) { 
+            this.sendResponse({status: Status.ERROR, data: error} , res);
+        }
+    }
 }
 export default new UserService;

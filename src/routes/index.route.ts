@@ -19,7 +19,7 @@ export const routes = (app: express.Application) => {
     console.log(chalk.yellow.bgBlack.bold("Loading user routes"));
     UserRoute.loadRoutes('/users', router);  
 
-    router.get('/', (req, res) => res.send('Welcome to InvestedPeople-Api'))
+    router.get('/', (req, res) => res.send('Welcome to Test-Api'))
 
     //use router middleware
     app.use(router);

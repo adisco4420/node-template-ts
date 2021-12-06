@@ -6,8 +6,8 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String, 
         unique: true,
-        lowercase: true,
-        required: true
+        lowercase: true, 
+        required: true  
     },
     balance: { type: Number, default: 0},
     phoneNumber: {type: String, required: true},
@@ -17,5 +17,5 @@ const UserSchema = new mongoose.Schema({
     bankInfo: {type: Object},
     otherInfo: {type: Object}, 
 })
-const UserModel = mongoose.model('users', UserSchema)
-export default UserModel
+const UserModel: any = mongoose.model('users', UserSchema)
+export default UserModel 

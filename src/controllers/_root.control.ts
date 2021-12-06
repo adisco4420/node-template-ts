@@ -14,7 +14,7 @@ export class RootController {
         } else {
             return true;
         }
-    } 
+    }
     create(payload) {
         return this.model.create({...payload})
     }

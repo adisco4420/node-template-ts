@@ -1,28 +1,33 @@
 import { Response } from "express";
-
+import { winston } from '../utilities/logger.util'
 export enum Status {
     SUCCESS,
     CREATED,
     FAILED_VALIDATION,
     UN_AUTHORIZED,
     ERROR,
+    PROCESSING,
     NOT_FOUND,
     PRECONDITION_FAILED,
-    SUCCESS_NO_CONTENT,
+    SUCCESS_NO_CONTENT, 
     FORBIDDEN,
     UNPROCESSABLE_ENTRY
 }
 
 export class RootService {
 
-    public sendResponse(serviceResponse: {status: Status , data: any, msg?: string}, res: Response): any {        
-        var response = {
+    public sendResponse(serviceResponse: {status: Status , data?: any, message?: string}, res: Response): any {        
+        const response = {
             status: this.getStatusString(serviceResponse.status),
             data: serviceResponse.data,
-            msg: serviceResponse.msg
+            message: serviceResponse.message
+        }
+        const status_code = this.getHttpStatus(response.status);
+        if(status_code >= 400) {
+            winston.error(`[App Error] ${response.message}`)
         }
         console.log('responding with', response.status);
-        res.status(this.getHttpStatus(response.status)).json(response);
+        res.status(status_code).json(response);
     }
     private getHttpStatus(status: any): number {
         switch (status) {

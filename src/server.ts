@@ -6,6 +6,7 @@ import * as helmet from 'helmet'
 import errorHandler = require("errorhandler");
 import { dbConfig } from './models/_config';
 import { routes } from './routes/index.route';
+import { morgan } from './utilities/logger.util'
 
 
 /**
@@ -44,9 +45,7 @@ export class Server {
 
     dbConfig()
     routes(this.app);
-
   }
-
   /**
    * Configure application
    *
@@ -65,11 +64,11 @@ export class Server {
     this.app.use(bodyParser.urlencoded({extended: true }));
 
     this.app.use(helmet())
+    this.app.use(morgan)
 
     //cors error allow
     this.app.options("*", cors());
     this.app.use(cors());
-
 
     // catch 404 and forward to error handler
     this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {

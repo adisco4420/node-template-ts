@@ -37,7 +37,7 @@ class SampleService extends RootService {
     updateOne = async (req: Request, res: Response) => {
         try {            
             const sample = await SampleController.updateOne(req.query, req.body)
-            if(sample.n) return this.sendResponse({status: Status.SUCCESS, data: sample}, res);
+            if(sample.acknowledged) return this.sendResponse({status: Status.SUCCESS, data: sample}, res);
             this.sendResponse({status: Status.UNPROCESSABLE_ENTRY, data: 'data not updated'}, res)
         } catch (error) {
             this.sendResponse({status: Status.ERROR, data: error}, res)
@@ -45,8 +45,8 @@ class SampleService extends RootService {
     }
     updateMany = async (req: Request, res: Response) => {
         try {                        
-            const sample = await SampleController.updateMany(req.query, req.body)
-            if(sample.n) return this.sendResponse({status: Status.SUCCESS, data: sample}, res);
+            const sample: any = await SampleController.updateMany(req.query, req.body)
+            if(sample.acknowledged) return this.sendResponse({status: Status.SUCCESS, data: sample}, res);
             this.sendResponse({status: Status.UNPROCESSABLE_ENTRY, data: 'data not updated'}, res)
         } catch (error) {
             this.sendResponse({status: Status.ERROR, data: error}, res)
@@ -54,7 +54,7 @@ class SampleService extends RootService {
     }
     updateById = async (req: Request, res: Response) => {
         try {            
-            const sample = await SampleController.updateById(req.params.id, req.body);
+            const sample: any = await SampleController.updateById(req.params.id, req.body);
             if(sample) return this.sendResponse({status: Status.SUCCESS, data: sample}, res);
             this.sendResponse({status: Status.PRECONDITION_FAILED, data: 'data not updated'}, res)
         } catch (error) {
@@ -63,8 +63,8 @@ class SampleService extends RootService {
     }
     deleteOne = async (req: Request, res: Response) => {
         try {            
-            const sample = await SampleController.deleteOne(req.query)
-            if(sample.n) return this.sendResponse({status: Status.SUCCESS_NO_CONTENT, data: sample}, res);
+            const sample: any = await SampleController.deleteOne(req.query)
+            if(sample.acknowledged) return this.sendResponse({status: Status.SUCCESS_NO_CONTENT, data: sample}, res);
             this.sendResponse({status: Status.UNPROCESSABLE_ENTRY, data: 'data not deleted'}, res)
         } catch (error) {
             this.sendResponse({status: Status.ERROR, data: error}, res)
@@ -72,8 +72,8 @@ class SampleService extends RootService {
     }
     deleteMany = async (req: Request, res: Response) => {
         try {            
-            const sample = await SampleController.deleteMany(req.query)
-            if(sample.n) return this.sendResponse({status: Status.SUCCESS_NO_CONTENT, data: sample}, res);
+            const sample: any = await SampleController.deleteMany(req.query)
+            if(sample.acknowledged) return this.sendResponse({status: Status.SUCCESS_NO_CONTENT, data: sample}, res);
             this.sendResponse({status: Status.UNPROCESSABLE_ENTRY, data: 'data not deleted'}, res)
         } catch (error) {
             console.log('error',error);

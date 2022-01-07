@@ -18,9 +18,9 @@ export class RootController {
     create(payload) {
         return this.model.create({...payload})
     }
-    getAll(query?: {filter?: any, limit?: number, skip?: number, sort?: any}) {
+    fetchAll(condition: object = {}, query?: {filter?: any, limit?: number, skip?: number, sort?: any}) {
         const { filter, skip, limit, sort } = QueryUtil.buildQuery(query);
-        return this.model.find({...filter}).skip(skip).limit(limit).sort(sort);
+        return this.model.find({...filter, ...condition}).skip(skip).limit(limit).sort(sort);
     }
     getOne(query, select = '') {
         const { filter } = QueryUtil.buildQuery(query)

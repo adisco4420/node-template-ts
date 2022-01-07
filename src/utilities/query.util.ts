@@ -8,6 +8,7 @@ class QueryUtil {
         return JSON.stringify(object)
     }
     buildQuery(query): {sort: any, limit: number, skip: number, filter: any} {
+        if(!query) query = {};
         const { sort, filter, limit, page, filterRange, ...rest } = query;
         let range = filterRange ?  this.strToObj(filterRange) : null;
         const filterx = filter ? this.strToObj(filter) : ({} as any);

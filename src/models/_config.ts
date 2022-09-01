@@ -20,7 +20,7 @@ export const dbConfig = () => {
         console.log(chalk.red.bgBlack.bold('An error occured while conencting to MongoDB'));
       });
     } else {
-      console.log('MONGODB_URI environment varaiable is required');
+      console.log('MONGODB_URI environment varaiable is required.');
       
     }
 }
